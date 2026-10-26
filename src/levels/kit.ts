@@ -6,11 +6,14 @@ export function makeKit() {
   const root = new THREE.Group();
   const findings: Finding[] = [];
   const devices: Device[] = [];
+  const tickers: ((dt: number, t: number) => void)[] = [];
 
   const put = <T extends THREE.Object3D>(obj: T, x: number, y: number, z: number, ry = 0): T => {
     obj.position.set(x, y, z);
     obj.rotation.y = ry;
     root.add(obj);
+    const tick = obj.userData.tick;
+    if (typeof tick === 'function') tickers.push(tick as (dt: number, t: number) => void);
     return obj;
   };
 
@@ -31,6 +34,7 @@ export function makeKit() {
     findings,
     devices,
     size: { w, d },
+    tickers,
   });
 
   return { root, findings, devices, put, dev, add, content };

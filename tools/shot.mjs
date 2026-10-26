@@ -1,7 +1,7 @@
 // Captura de pantalla fiable vía Chrome DevTools Protocol.
-// Uso: node tools/shot.mjs <url> <salida.png> [ancho] [alto] [esperaMs]
+// Uso: node tools/shot.mjs <url> <salida.png> [ancho] [alto] [esperaMs] [jsPrevio|@archivo.js]
 import { spawn } from 'node:child_process';
-import { writeFileSync, mkdirSync } from 'node:fs';
+import { writeFileSync, mkdirSync, readFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 
 const EDGE = 'C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe';
@@ -13,6 +13,10 @@ const out = resolve(process.argv[3] ?? 'shot.png');
 const width = Number(process.argv[4] ?? 1440);
 const height = Number(process.argv[5] ?? 900);
 const waitMs = Number(process.argv[6] ?? 3500);
+const preShotJsRaw = process.argv[7] ?? '';
+const preShotJs = preShotJsRaw.startsWith('@')
+  ? readFileSync(resolve(preShotJsRaw.slice(1)), 'utf8')
+  : preShotJsRaw;
 
 mkdirSync(PROFILE, { recursive: true });
 mkdirSync(dirname(out), { recursive: true });
@@ -116,6 +120,16 @@ try {
 
   await send('Page.navigate', { url });
   await sleep(waitMs);
+
+  if (preShotJs) {
+    const r = await send('Runtime.evaluate', {
+      expression: preShotJs,
+      returnByValue: true,
+      awaitPromise: true,
+    });
+    if (r.result) console.log('eval:', JSON.stringify(r.result.value ?? r.result.description));
+    await sleep(400);
+  }
 
   const shot = await send('Page.captureScreenshot', { format: 'png', captureBeyondViewport: false });
   writeFileSync(out, Buffer.from(shot.data, 'base64'));

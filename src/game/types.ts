@@ -26,6 +26,8 @@ export type LevelContent = {
   findings: Finding[];
   devices: Device[];
   size: LevelSize;
+  /** Animaciones continuas de decoración (paisaje, etc.). */
+  tickers?: ((dt: number, t: number) => void)[];
 };
 
 export type LevelDef = {

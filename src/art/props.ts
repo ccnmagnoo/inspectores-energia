@@ -2,6 +2,8 @@ import * as THREE from 'three';
 import { C } from './palette';
 import { mat, matUnique } from './materials';
 import type { MatOpts } from './materials';
+import { scenery } from './scenery';
+import type { SceneryOpts } from './scenery';
 
 /** Un dispositivo es un grupo 3D que puede apagarse o corregirse. */
 export type Device = {
@@ -235,6 +237,8 @@ export type RoomOpts = {
   wall?: number;
   trim?: number;
   wallHeight?: number;
+  /** Paisaje exterior alrededor de la sala. `false` lo desactiva. */
+  scenery?: false | SceneryOpts;
 };
 
 export function roomBase(w: number, d: number, opts: RoomOpts = {}): THREE.Group {
@@ -281,6 +285,16 @@ export function roomBase(w: number, d: number, opts: RoomOpts = {}): THREE.Group
   const capLeft = bx(0.34, 0.09, d + 1.0, trimColor);
   at(capLeft, -w / 2 - 0.11, wallH + 0.04, 0);
   g.add(capLeft);
+
+  // Paisaje exterior: prado, montañas y árboles alrededor del diorama.
+  if (opts.scenery !== false) {
+    const landscape = scenery(w, d, {
+      ...opts.scenery,
+      wallTop: opts.scenery?.wallTop ?? wallH + 0.085,
+    });
+    g.add(landscape);
+    g.userData.tick = landscape.userData.tick;
+  }
 
   return g;
 }

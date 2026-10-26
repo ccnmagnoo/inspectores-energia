@@ -145,6 +145,7 @@ Nunca se culpa al jugador: el error solo resta puntos y devuelve una pista.
 │  │  ├─ palette.ts         # paleta única del juego
 │  │  ├─ materials.ts       # caché de materiales y materiales mutables
 │  │  ├─ props.ts           # primitivas, sala, muebles y decoración común
+│  │  ├─ scenery.ts         # paisaje exterior: prado, montañas y árboles
 │  │  ├─ home.ts            # objetos de la vivienda
 │  │  ├─ cafe.ts            # objetos de la cafetería
 │  │  ├─ tools.ts           # objetos del taller
@@ -296,6 +297,16 @@ lo que desperdicia y verde menta para lo corregido.
 
 Los materiales se cachean por combinación de parámetros. Eso mantiene el número
 de programas de shader bajo y los 60 fps estables incluso con cientos de mallas.
+
+### Paisaje exterior
+
+Cada sala se apoya en un diorama de prado con colinas, cordilleras y árboles
+generados por código en `src/art/scenery.ts`. El paisaje usa un generador
+pseudoaleatorio con semilla derivada del tamaño de la sala, así que cada
+escenario conserva su composición entre recargas. Las cordilleras se construyen
+como siluetas verticales alineadas con la cámara isométrica: asoman por encima
+de las paredes sin tapar la sala, los objetivos ni el HUD. Se puede desactivar
+con `scenery: false` en las opciones de `roomBase`.
 
 ### Señuelos
 

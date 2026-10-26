@@ -206,6 +206,8 @@ export class Game {
       }
     }
 
+    for (const t of content.tickers ?? []) this.tickers.add(t);
+
     const wasteTotal = content.findings.filter((f) => f.isWaste).length;
     const decoyTotal = content.findings.length - wasteTotal;
     this.scoring = new Scoring(wasteTotal, decoyTotal);
@@ -226,7 +228,7 @@ export class Game {
   private computeViewSize(w: number, d: number): void {
     const diag = (w + d) / Math.SQRT2;
     const spanX = diag * 1.1;
-    const spanY = diag * Math.sin(ELEVATION) + 4.2;
+    const spanY = diag * Math.sin(ELEVATION) + 7.5;
     this.viewSize = Math.max(spanY, spanX / this.aspect);
   }
 

@@ -16,6 +16,16 @@ export const C = {
   forest: 0x3f6b4a,
   leaf: 0x6fa04f,
 
+  // Paisaje de fondo
+  meadow: 0x9cbd74,
+  meadowLight: 0xb8d492,
+  meadowDark: 0x7fa75c,
+  grassDeep: 0x5f8a4d,
+  hill: 0x96b878,
+  mountain: 0x829e99,
+  mountainFar: 0xa9bdc0,
+  snow: 0xf3f2e7,
+
   // Acentos
   sun: 0xffc94d,
   coral: 0xef6a5b,

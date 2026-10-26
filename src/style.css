@@ -76,7 +76,7 @@ p {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(120% 90% at 50% 0%, #fff6e6 0%, #f6e7d3 42%, #e8d3b6 100%);
+    linear-gradient(180deg, #d9ecf4 0%, #eaf0e4 42%, #f6e7d3 72%, #e8d3b6 100%);
 }
 
 #scene {
